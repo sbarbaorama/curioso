@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HomeIcon, ProgressIcon, ReviewIcon, SettingsIcon } from "./components/Icons";
 import { Home } from "./screens/Home";
 import { Lesson } from "./screens/Lesson";
 import { Onboarding } from "./screens/Onboarding";
@@ -49,16 +50,20 @@ export function App() {
       </main>
       <nav className="tabbar">
         <button className={tab === "home" ? "on" : ""} onClick={() => setTab("home")}>
-          <span>🏠</span>Oggi
+          <HomeIcon />
+          Oggi
         </button>
         <button className={tab === "review" ? "on" : ""} onClick={() => setTab("review")}>
-          <span>🧠</span>Ripasso{due > 0 && <i className="count">{due}</i>}
+          <ReviewIcon />
+          Ripasso{due > 0 && <i className="count">{due}</i>}
         </button>
         <button className={tab === "progress" ? "on" : ""} onClick={() => setTab("progress")}>
-          <span>📈</span>Progressi
+          <ProgressIcon />
+          Progressi
         </button>
         <button className={tab === "settings" ? "on" : ""} onClick={() => setTab("settings")}>
-          <span>⚙️</span>Impostazioni
+          <SettingsIcon />
+          Impostazioni
         </button>
       </nav>
     </div>

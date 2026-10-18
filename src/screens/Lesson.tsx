@@ -45,6 +45,10 @@ export function Lesson({ source, onClose, onNext }: { source: Source; onClose: (
     if (record) setResults(new Array(record.lesson.quiz.length).fill(null));
   }, [record?.id]);
 
+  useEffect(() => {
+    document.querySelector(".step.on")?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  }, [step, record?.id]);
+
   if (!record) {
     return (
       <div className="screen">
@@ -142,19 +146,24 @@ export function Lesson({ source, onClose, onNext }: { source: Source; onClose: (
   return (
     <div className="screen lesson">
       <div className="lesson-top">
-        <button className="btn ghost" onClick={onClose}>✕</button>
-        <div className="steps">
-          {STEPS.map((s, i) => (
-            <button key={s} className={i === step ? "dot on" : i < step ? "dot done" : "dot"} onClick={() => setStep(i)} aria-label={s} />
-          ))}
-        </div>
+        <button className="btn ghost" onClick={onClose} aria-label="Chiudi">
+          ✕
+        </button>
+        <span>
+          {area.emoji} {area.label} · {step + 1}/{STEPS.length}
+        </span>
+        <span style={{ width: 32 }} />
       </div>
-      <div className="area-tag">
-        {area.emoji} {area.label}
+      <div className="progress">
+        <div style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
       </div>
       <h1>{lesson.topic}</h1>
-      <div className="eyebrow">
-        {step + 1}. {STEPS[step]}
+      <div className="steps">
+        {STEPS.map((s, i) => (
+          <button key={s} className={i === step ? "step on" : i < step ? "step done" : "step"} onClick={() => setStep(i)}>
+            {s}
+          </button>
+        ))}
       </div>
 
       <div className="card">
@@ -309,7 +318,8 @@ function Question({ n, q, lesson, onResult }: { n: number; q: QuizItem; lesson: 
               onClick={() => pick(i)}
               disabled={done}
             >
-              {o}
+              <kbd>{"ABCDEF"[i]}</kbd>
+              <span>{o}</span>
             </button>
           ))}
         </div>

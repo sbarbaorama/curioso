@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Curioso – varianti grafiche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9e9ee; font-family: Inter, system-ui, sans-serif; color: #222; }
+  .page { max-width: 1280px; margin: 0 auto; padding: 32px 16px 64px; }
+  .page > h1 { font-size: 28px; margin: 0 0 4px; }
+  .page > p { margin: 0 0 32px; color: #555; }
+  .variant { margin-bottom: 56px; }
+  .vhead { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; margin-bottom: 16px; }
+  .vhead h2 { margin: 0; font-size: 22px; }
+  .vhead .insp { color: #666; font-size: 14px; }
+  .vhead .sw { display: flex; gap: 6px; }
+  .vhead .sw i { width: 22px; height: 22px; border-radius: 6px; display: block; border: 1px solid rgba(0,0,0,.1); }
+  .phones { display: flex; flex-wrap: wrap; gap: 28px; }
+  .phone { width: 360px; height: 740px; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,.18), 0 0 0 10px #111; margin: 10px; flex-shrink: 0; }
+  .phone .scroll { position: absolute; inset: 0 0 72px 0; overflow: hidden; padding: 44px 18px 18px; }
+  .tab { position: absolute; left: 0; right: 0; bottom: 0; height: 72px; display: grid; grid-template-columns: repeat(4,1fr); align-items: center; text-align: center; font-size: 11px; }
+  .tab div { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .tab svg { width: 24px; height: 24px; }
+  .notes { max-width: 380px; font-size: 14px; color: #444; line-height: 1.55; margin: 10px; }
+  .notes b { color: #111; }
+  .notes ul { padding-left: 18px; margin: 6px 0; }
+
+  /* ============ VARIANTE A — GIOCOSO (stile Duolingo) ============ */
+  .A { background: #fff; font-family: Nunito, sans-serif; color: #3c3c3c; }
+  .A .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .A .pill { display: flex; gap: 14px; font-weight: 800; font-size: 15px; }
+  .A .pill span:nth-child(1) { color: #ff9600; } .A .pill span:nth-child(2) { color: #1cb0f6; } .A .pill span:nth-child(3) { color: #ff4b4b; }
+  .A .avatar { width: 34px; height: 34px; border-radius: 50%; background: #ce82ff; color: #fff; display: grid; place-items: center; font-weight: 900; }
+  .A h1 { font-size: 24px; font-weight: 900; margin: 0 0 4px; color: #3c3c3c; }
+  .A .sub { color: #777; font-weight: 700; margin: 0 0 16px; }
+  .A .mission { background: #58cc02; border-radius: 20px; padding: 18px; color: #fff; box-shadow: 0 6px 0 #46a302; margin-bottom: 22px; position: relative; }
+  .A .mission .lbl { font-size: 13px; font-weight: 900; letter-spacing: .08em; opacity: .9; }
+  .A .mission h2 { font-size: 22px; font-weight: 900; margin: 6px 0 8px; line-height: 1.2; }
+  .A .mission p { margin: 0 0 14px; font-weight: 700; font-size: 15px; }
+  .A .mission .mascot { position: absolute; right: 14px; top: 12px; font-size: 40px; }
+  .A .btn3d { display: block; width: 100%; border: 0; border-radius: 16px; padding: 13px; font: 900 16px Nunito; text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
+  .A .btn-white { background: #fff; color: #58a700; box-shadow: 0 4px 0 #d7ffb8; }
+  .A .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .A .btn-ghost { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.6); box-shadow: none; font-size: 13px; padding: 10px; }
+  .A .sec { font-weight: 900; font-size: 18px; margin: 0 0 10px; }
+  .A .chal { border: 2px solid #e5e5e5; border-radius: 16px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .A .chal .ico { font-size: 26px; }
+  .A .chal .t { font-weight: 800; font-size: 15px; }
+  .A .bar { height: 14px; border-radius: 8px; background: #e5e5e5; overflow: hidden; margin-top: 6px; }
+  .A .bar i { display: block; height: 100%; background: #ffc800; border-radius: 8px; }
+  .A .review { background: #ddf4ff; border: 2px solid #84d8ff; border-radius: 16px; padding: 12px 14px; font-weight: 800; color: #1899d6; margin-bottom: 18px; display: flex; justify-content: space-between; }
+  .A .tab { border-top: 2px solid #e5e5e5; background: #fff; color: #afafaf; font-weight: 800; }
+  .A .tab .on { color: #1cb0f6; }
+  .A .tab .on svg { background: #ddf4ff; border: 2px solid #84d8ff; border-radius: 12px; padding: 4px; width: 38px; height: 34px; }
+  /* quiz A */
+  .A .qtop { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+  .A .qtop .x { font-size: 22px; color: #afafaf; font-weight: 900; }
+  .A .qtop .bar { flex: 1; margin: 0; height: 16px; }
+  .A .qtop .bar i { background: #58cc02; width: 72%; }
+  .A .qtag { color: #ce82ff; font-weight: 900; font-size: 13px; letter-spacing: .06em; }
+  .A .qtitle { font-size: 22px; font-weight: 900; margin: 6px 0 18px; line-height: 1.25; }
+  .A .opt { border: 2px solid #e5e5e5; border-radius: 16px; padding: 14px; font-weight: 800; font-size: 16px; margin-bottom: 10px; box-shadow: 0 4px 0 #e5e5e5; display: flex; gap: 12px; align-items: center; }
+  .A .opt .k { border: 2px solid #e5e5e5; border-radius: 8px; width: 28px; height: 28px; display: grid; place-items: center; font-size: 13px; color: #afafaf; }
+  .A .opt.sel { border-color: #84d8ff; background: #ddf4ff; box-shadow: 0 4px 0 #84d8ff; color: #1899d6; }
+  .A .opt.sel .k { border-color: #84d8ff; color: #1899d6; }
+  .A .hint { background: #fff4d6; border-radius: 14px; padding: 10px 12px; font-weight: 700; font-size: 14px; color: #a56b00; margin-top: 4px; }
+  .A .fb { position: absolute; left: 0; right: 0; bottom: 0; background: #d7ffb8; padding: 18px 18px 22px; }
+  .A .fb h3 { margin: 0 0 4px; color: #58a700; font-weight: 900; font-size: 22px; }
+  .A .fb p { margin: 0 0 14px; color: #58a700; font-weight: 700; }
+  .A .btn-green { background: #58cc02; color: #fff; box-shadow: 0 4px 0 #46a302; }
+
+  /* ============ VARIANTE B — EDITORIALE (stile Brilliant / Headway) ============ */
+  .B { background: #f7f5f0; font-family: Inter, sans-serif; color: #1a1a1a; }
+  .B .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 13px; color: #6b6b6b; }
+  .B .streak { background: #fff; border-radius: 99px; padding: 6px 12px; font-weight: 600; color: #1a1a1a; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  .B h1 { font-family: Fraunces, serif; font-size: 30px; line-height: 1.1; margin: 0 0 18px; font-weight: 700; letter-spacing: -.01em; }
+  .B .mission { background: #1a1a1a; color: #fff; border-radius: 24px; overflow: hidden; margin-bottom: 18px; }
+  .B .mission .art { height: 120px; background: radial-gradient(circle at 75% 40%, #ffd166 0 26px, transparent 27px), radial-gradient(circle at 30% 120%, #3a86ff 0 90px, transparent 91px), linear-gradient(135deg, #8338ec, #3a86ff); position: relative; }
+  .B .mission .art span { position: absolute; left: 16px; top: 14px; background: rgba(255,255,255,.18); backdrop-filter: blur(6px); border-radius: 99px; padding: 4px 10px; font-size: 12px; font-weight: 600; }
+  .B .mission .body { padding: 16px 18px 18px; }
+  .B .mission .lbl { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #9a9a9a; font-weight: 600; }
+  .B .mission h2 { font-family: Fraunces, serif; font-size: 23px; margin: 6px 0 8px; line-height: 1.15; }
+  .B .mission p { margin: 0 0 16px; color: #c9c9c9; font-size: 14px; line-height: 1.5; }
+  .B .mission .actions { display: flex; gap: 8px; }
+  .B .btn { border: 0; border-radius: 99px; padding: 12px 18px; font: 600 15px Inter; }
+  .B .btn-light { background: #fff; color: #1a1a1a; flex: 1; }
+  .B .btn-out { background: transparent; color: #fff; border: 1px solid #444; }
+  .B .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .B .tile { border-radius: 20px; padding: 14px; min-height: 96px; display: flex; flex-direction: column; justify-content: space-between; }
+  .B .tile b { font-size: 26px; font-family: Fraunces, serif; }
+  .B .tile span { font-size: 13px; font-weight: 500; }
+  .B .t1 { background: #ffe5d9; } .B .t2 { background: #d8f3dc; }
+  .B .sec { font-size: 13px; font-weight: 600; color: #6b6b6b; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 8px; }
+  .B .card { background: #fff; border-radius: 20px; padding: 6px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .B .item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+  .B .item:last-child { border: 0; }
+  .B .ring { width: 30px; height: 30px; border-radius: 50%; background: conic-gradient(#1a1a1a var(--p), #eee 0); display: grid; place-items: center; }
+  .B .ring::after { content: ""; width: 22px; height: 22px; background: #fff; border-radius: 50%; }
+  .B .item .v { margin-left: auto; color: #9a9a9a; font-size: 13px; }
+  .B .tab { background: #f7f5f0; border-top: 1px solid #e5e2da; color: #9a9a9a; font-weight: 500; }
+  .B .tab .on { color: #1a1a1a; font-weight: 700; }
+  /* quiz B */
+  .B .qtop { display: flex; gap: 4px; margin-bottom: 26px; }
+  .B .qtop i { flex: 1; height: 4px; border-radius: 4px; background: #e2ded4; }
+  .B .qtop i.d { background: #1a1a1a; }
+  .B .qtag { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8338ec; font-weight: 700; }
+  .B .qtitle { font-family: Fraunces, serif; font-size: 25px; line-height: 1.2; margin: 8px 0 20px; }
+  .B .opt { background: #fff; border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; font-size: 15px; font-weight: 500; border: 1.5px solid transparent; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+  .B .opt.ok { border-color: #2d6a4f; background: #d8f3dc; }
+  .B .opt.ok::after { content: "✓"; float: right; color: #2d6a4f; font-weight: 700; }
+  .B .explain { background: #fff; border-left: 3px solid #2d6a4f; border-radius: 0 16px 16px 0; padding: 12px 14px; font-size: 14px; line-height: 1.5; margin-top: 6px; }
+  .B .explain b { display: block; font-family: Fraunces, serif; font-size: 17px; margin-bottom: 2px; color: #2d6a4f; }
+  .B .hintlink { color: #8338ec; font-weight: 600; font-size: 14px; margin-top: 14px; display: inline-block; }
+  .B .next { position: absolute; left: 18px; right: 18px; bottom: 18px; }
+  .B .btn-dark { width: 100%; background: #1a1a1a; color: #fff; padding: 15px; }
+
+  /* ============ VARIANTE C — NOTTURNO (stile Linear / Arc) ============ */
+  .C { background: #0b0b14; font-family: "Space Grotesk", sans-serif; color: #e9e9f2; }
+  .C::before { content: ""; position: absolute; width: 380px; height: 380px; left: -120px; top: -140px; background: radial-gradient(circle, rgba(124,92,255,.45), transparent 65%); }
+  .C::after { content: ""; position: absolute; width: 320px; height: 320px; right: -140px; top: 260px; background: radial-gradient(circle, rgba(0,212,255,.25), transparent 65%); }
+  .C .scroll { z-index: 1; }
+  .C .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .C .hello { font-size: 13px; color: #8b8ba7; }
+  .C h1 { font-size: 26px; margin: 2px 0 0; font-weight: 600; letter-spacing: -.02em; }
+  .C .streak { border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); border-radius: 12px; padding: 6px 10px; font-weight: 600; font-size: 14px; }
+  .C .glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 22px; backdrop-filter: blur(14px); }
+  .C .mission { padding: 18px; margin-bottom: 14px; position: relative; overflow: hidden; }
+  .C .mission .lbl { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; color: #b9a8ff; font-weight: 600; letter-spacing: .04em; }
+  .C .mission .lbl i { width: 6px; height: 6px; border-radius: 50%; background: #7c5cff; box-shadow: 0 0 10px #7c5cff; }
+  .C .mission h2 { font-size: 22px; margin: 10px 0 8px; font-weight: 600; line-height: 1.2; }
+  .C .mission p { color: #a3a3bd; font-size: 14px; line-height: 1.5; margin: 0 0 16px; }
+  .C .chip { display: inline-block; font-size: 12px; padding: 3px 9px; border-radius: 8px; background: rgba(0,212,255,.12); color: #7fe7ff; margin-bottom: 4px; }
+  .C .actions { display: flex; gap: 8px; }
+  .C .btn { border: 0; border-radius: 12px; padding: 12px 16px; font: 600 15px "Space Grotesk"; }
+  .C .btn-grad { flex: 1; background: linear-gradient(135deg, #7c5cff, #00d4ff); color: #fff; box-shadow: 0 8px 24px rgba(124,92,255,.35); }
+  .C .btn-glass { background: rgba(255,255,255,.08); color: #e9e9f2; border: 1px solid rgba(255,255,255,.12); }
+  .C .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+  .C .stat { padding: 12px; text-align: left; }
+  .C .stat b { font-size: 22px; display: block; font-weight: 600; }
+  .C .stat span { font-size: 11px; color: #8b8ba7; }
+  .C .chal { padding: 14px 16px; }
+  .C .chal h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: #a3a3bd; }
+  .C .row { display: flex; justify-content: space-between; font-size: 14px; margin-top: 10px; }
+  .C .bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,.08); margin-top: 6px; overflow: hidden; }
+  .C .bar i { display: block; height: 100%; background: linear-gradient(90deg, #7c5cff, #00d4ff); border-radius: 6px; }
+  .C .tab { z-index: 2; background: rgba(11,11,20,.85); backdrop-filter: blur(14px); border-top: 1px solid rgba(255,255,255,.08); color: #6b6b85; }
+  .C .tab .on { color: #fff; }
+  .C .tab .on svg { filter: drop-shadow(0 0 6px #7c5cff); }
+  /* quiz C */
+  .C .qtop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 13px; color: #8b8ba7; }
+  .C .qbar { height: 3px; background: rgba(255,255,255,.08); border-radius: 3px; margin-bottom: 24px; }
+  .C .qbar i { display: block; width: 72%; height: 100%; background: linear-gradient(90deg, #7c5cff, #00d4ff); border-radius: 3px; box-shadow: 0 0 12px #7c5cff; }
+  .C .qtitle { font-size: 22px; font-weight: 600; line-height: 1.25; margin: 6px 0 18px; letter-spacing: -.01em; }
+  .C .opt { padding: 14px 16px; margin-bottom: 10px; font-size: 15px; display: flex; gap: 12px; align-items: center; }
+  .C .opt kbd { font: 600 12px "Space Grotesk"; color: #8b8ba7; border: 1px solid rgba(255,255,255,.15); border-radius: 6px; padding: 1px 7px; }
+  .C .opt.bad { border-color: rgba(255,99,132,.6); background: rgba(255,99,132,.1); }
+  .C .opt.ok { border-color: rgba(0,230,160,.6); background: rgba(0,230,160,.1); }
+  .C .fb { padding: 14px 16px; margin-top: 8px; border-color: rgba(255,99,132,.35); }
+  .C .fb b { color: #ff8fa6; }
+  .C .fb p { margin: 4px 0 0; color: #c3c3d6; font-size: 14px; line-height: 1.5; }
+  .C .next { position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 2; }
+  .C .next .btn-grad { width: 100%; padding: 15px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Curioso: tre varianti grafiche</h1>
+  <p>Per ogni variante: schermata <b>Oggi</b> e schermata <b>Verifica</b> (dopo aver risposto). Dimmi quale preferisci, oppure cosa prendere da ciascuna.</p>
+
+  <!-- ===================== A ===================== -->
+  <section class="variant">
+    <div class="vhead">
+      <h2>A · Giocoso</h2>
+      <span class="insp">Ispirata a Duolingo: colori pieni, pulsanti “in rilievo”, mascotte, tono da gioco</span>
+      <span class="sw"><i style="background:#58cc02"></i><i style="background:#1cb0f6"></i><i style="background:#ffc800"></i><i style="background:#ce82ff"></i><i style="background:#ff4b4b"></i></span>
+    </div>
+    <div class="phones">
+      <div class="phone A">
+        <div class="scroll">
+          <div class="top"><div class="pill"><span>🔥 12</span><span>💎 340</span><span>❤️ 5</span></div><div class="avatar">🙂</div></div>
+          <h1>Ciao!</h1>
+          <p class="sub">Pronto per la missione di oggi?</p>
+          <div class="mission">
+            <div class="mascot">🦉</div>
+            <div class="lbl">🔬 MISSIONE DEL GIORNO</div>
+            <h2>Perché il cielo<br>è blu?</h2>
+            <p>💡 Al tramonto su Marte il cielo diventa blu!</p>
+            <button class="btn3d btn-white">Inizia · 10 min</button>
+            <div class="row2"><button class="btn3d btn-ghost">↻ Cambia</button><button class="btn3d btn-ghost">✎ Scelgo io</button></div>
+          </div>
+          <div class="review"><span>🧠 8 schede da ripassare</span><span>›</span></div>
+          <div class="sec">Sfide della settimana</div>
+          <div class="chal"><div class="ico">⚡</div><div style="flex:1"><div class="t">Completa 3 missioni</div><div class="bar"><i style="width:66%"></i></div></div></div>
+          <div class="chal"><div class="ico">🎯</div><div style="flex:1"><div class="t">Ripassa 30 schede</div><div class="bar"><i style="width:40%"></i></div></div></div>
+        </div>
+        <nav class="tab">
+          <div class="on"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 3 10v11h6v-6h6v6h6V10z"/></svg>Oggi</div>
+          <div><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg>Ripasso</div>
+          <div><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 20V10h4v10zm6 0V4h4v16zm6 0v-7h4v7z"/></svg>Progressi</div>
+          <div><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7z"/></svg>Profilo</div>
+        </nav>
+      </div>
+      <div class="phone A">
+        <div class="scroll" style="inset:0">
+          <div class="qtop"><span class="x">✕</span><div class="bar"><i></i></div><span style="color:#ff4b4b;font-weight:900">❤️ 5</span></div>
+          <div class="qtag">✦ VERIFICA · 1 DI 3</div>
+          <div class="qtitle">Quale colore viene diffuso di più dall'atmosfera?</div>
+          <div class="opt"><span class="k">1</span>Rosso</div>
+          <div class="opt sel"><span class="k">2</span>Blu</div>
+          <div class="opt"><span class="k">3</span>Verde</div>
+          <div class="opt"><span class="k">4</span>Giallo</div>
+          <div class="hint">💡 Indizio: pensa alla lunghezza d'onda</div>
+          <div class="fb"><h3>✔ Ottimo!</h3><p>Il blu ha lunghezza d'onda corta: viene deviato di più.</p><button class="btn3d btn-green">Continua</button></div>
+        </div>
+      </div>
+      <div class="notes">
+        <b>Punti di forza</b>
+        <ul><li>Molto motivante, ogni azione sembra un “gioco”</li><li>Pulsanti grandi, perfetti col pollice</li><li>Feedback immediato a tutta larghezza</li></ul>
+        <b>Limiti</b>
+        <ul><li>Può sembrare infantile per argomenti universitari o di lavoro</li><li>Colori molto accesi, si stancano dopo un po'</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== B ===================== -->
+  <section class="variant">
+    <div class="vhead">
+      <h2>B · Editoriale</h2>
+      <span class="insp">Ispirata a Brilliant e Headway: carta calda, titoli serif, card illustrate, molto spazio bianco</span>
+      <span class="sw"><i style="background:#f7f5f0"></i><i style="background:#1a1a1a"></i><i style="background:#8338ec"></i><i style="background:#ffe5d9"></i><i style="background:#d8f3dc"></i></span>
+    </div>
+    <div class="phones">
+      <div class="phone B">
+        <div class="scroll">
+          <div class="top"><span>Domenica 18 ottobre</span><span class="streak">🔥 12 giorni</span></div>
+          <h1>Buongiorno.</h1>
+          <div class="mission">
+            <div class="art"><span>🔬 Scienza · 10 min</span></div>
+            <div class="body">
+              <div class="lbl">Missione del giorno</div>
+              <h2>Perché il cielo è blu?</h2>
+              <p>Al tramonto, su Marte, il cielo diventa blu. Scopri perché sulla Terra succede il contrario.</p>
+              <div class="actions"><button class="btn btn-light">Inizia</button><button class="btn btn-out">↻</button><button class="btn btn-out">✎</button></div>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="tile t1"><b>8</b><span>schede da ripassare →</span></div>
+            <div class="tile t2"><b>Livello 3</b><span>Scienza · Praticante</span></div>
+          </div>
+          <div class="sec">Questa settimana</div>
+          <div class="card">
+            <div class="item"><div class="ring" style="--p:66%"></div>3 missioni<span class="v">2/3</span></div>
+            <div class="item"><div class="ring" style="--p:40%"></div>30 schede ripassate<span class="v">12/30</span></div>
+          </div>
+        </div>
+        <nav class="tab">
+          <div class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>Oggi</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 9h6M9 13h6"/></svg>Ripasso</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19 10 12l4 4 6-8"/></svg>Progressi</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>Impostazioni</div>
+        </nav>
+      </div>
+      <div class="phone B">
+        <div class="scroll" style="inset:0;padding-top:48px">
+          <div class="qtop"><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i></i><i></i></div>
+          <div class="qtag">Verifica · domanda 1 di 3</div>
+          <div class="qtitle">Quale colore viene diffuso di più dall'atmosfera?</div>
+          <div class="opt">Rosso</div>
+          <div class="opt ok">Blu</div>
+          <div class="opt">Verde</div>
+          <div class="explain"><b>Esatto.</b>Il blu ha una lunghezza d'onda corta, quindi le molecole dell'aria lo deviano molto più del rosso.</div>
+          <span class="hintlink">Spiegamelo come a un bambino →</span>
+          <div class="next"><button class="btn btn-dark">Continua</button></div>
+        </div>
+      </div>
+      <div class="notes">
+        <b>Punti di forza</b>
+        <ul><li>Elegante e “adulta”, adatta a ogni livello</li><li>Testi lunghi molto leggibili, ideale per spiegazioni</li><li>Le card illustrate rendono riconoscibile ogni area</li></ul>
+        <b>Limiti</b>
+        <ul><li>Meno “energia” da gioco</li><li>Serve una versione scura dedicata per la sera</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== C ===================== -->
+  <section class="variant">
+    <div class="vhead">
+      <h2>C · Notturno</h2>
+      <span class="insp">Ispirata a Linear e Arc: sfondo scuro, card in vetro smerigliato, accenti sfumati viola-azzurro</span>
+      <span class="sw"><i style="background:#0b0b14"></i><i style="background:#7c5cff"></i><i style="background:#00d4ff"></i><i style="background:#00e6a0"></i><i style="background:#ff6384"></i></span>
+    </div>
+    <div class="phones">
+      <div class="phone C">
+        <div class="scroll">
+          <div class="top"><div><div class="hello">Buonasera</div><h1>Bentornato</h1></div><div class="streak">🔥 12</div></div>
+          <div class="glass mission">
+            <div class="lbl"><i></i>MISSIONE DEL GIORNO</div>
+            <h2>Perché il cielo è blu?</h2>
+            <span class="chip">Scienza · 10 min · livello intermedio</span>
+            <p>Al tramonto, su Marte, il cielo diventa blu. Sulla Terra succede l'opposto.</p>
+            <div class="actions"><button class="btn btn-grad">Inizia missione</button><button class="btn btn-glass">↻</button></div>
+          </div>
+          <div class="stats">
+            <div class="glass stat"><b>8</b><span>da ripassare</span></div>
+            <div class="glass stat"><b>340</b><span>XP totali</span></div>
+            <div class="glass stat"><b>4</b><span>badge</span></div>
+          </div>
+          <div class="glass chal">
+            <h3>Sfide settimanali</h3>
+            <div class="row"><span>3 missioni</span><span>2/3</span></div><div class="bar"><i style="width:66%"></i></div>
+            <div class="row"><span>30 schede</span><span>12/30</span></div><div class="bar"><i style="width:40%"></i></div>
+          </div>
+        </div>
+        <nav class="tab">
+          <div class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>Oggi</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4a8 8 0 1 0 8 8"/><path d="M20 4v5h-5"/></svg>Ripasso</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19 10 12l4 4 6-8"/></svg>Progressi</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>Impostazioni</div>
+        </nav>
+      </div>
+      <div class="phone C">
+        <div class="scroll" style="inset:0">
+          <div class="qtop"><span>✕</span><span>Verifica · 1/3</span><span>💡 2</span></div>
+          <div class="qbar"><i></i></div>
+          <div class="qtitle">Quale colore viene diffuso di più dall'atmosfera?</div>
+          <div class="glass opt bad"><kbd>A</kbd>Rosso</div>
+          <div class="glass opt ok"><kbd>B</kbd>Blu</div>
+          <div class="glass opt"><kbd>C</kbd>Verde</div>
+          <div class="glass opt"><kbd>D</kbd>Giallo</div>
+          <div class="glass fb"><b>Non proprio.</b><p>Il rosso ha lunghezza d'onda lunga e passa quasi indisturbato. È il blu a essere diffuso di più.</p></div>
+          <div class="next"><button class="btn btn-grad">Continua</button></div>
+        </div>
+      </div>
+      <div class="notes">
+        <b>Punti di forza</b>
+        <ul><li>Moderna e “tech”, perfetta per programmazione e tecnologia</li><li>Riposante la sera, consuma meno batteria su OLED</li><li>Molto coerente con i blocchi di codice</li></ul>
+        <b>Limiti</b>
+        <ul><li>Meno leggibile alla luce del sole</li><li>Lo stile vetro può risultare freddo</li></ul>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

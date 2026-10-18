@@ -1,6 +1,6 @@
 // Service worker: rende l'app installabile e utilizzabile offline (ripassi, appunti).
 // Le chiamate ai motori AI e a GitHub (altri domini) non vengono mai messe in cache.
-const CACHE = "curioso-v1";
+const CACHE = "curioso-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(["./", "./index.html", "./manifest.webmanifest", "./icon.svg"])));

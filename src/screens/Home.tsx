@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { proposeMission } from "../ai/prompts";
 import { isConfigured } from "../ai/engines";
-import { streak, todayKey, weeklyChallenges } from "../gamification";
+import { skillLabel, streak, todayKey, weeklyChallenges } from "../gamification";
 import { dueCards } from "../srs";
 import { getData, getSettings, setData, useData, useSettings } from "../store";
 import type { Mission } from "../types";
@@ -49,11 +49,9 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
     <div className="screen">
       <header className="home-head">
         <div>
-          <h1>
-            {hello}
-            {data.profile?.name ? `, ${data.profile.name}` : ""}!
-          </h1>
-          <p className="muted">{doneToday ? "Missione di oggi completata ✅" : "Pronto per la missione di oggi?"}</p>
+          <div className="hello">{hello}</div>
+          <h1>{data.profile?.name || "Bentornato"}</h1>
+          <p className="status">{doneToday ? "Missione di oggi completata ✓" : "Pronto per la missione di oggi?"}</p>
         </div>
         <div className="streak" title="Streak flessibile: un giorno saltato non la interrompe">
           🔥 {streak(data.stats.activeDays)}
@@ -67,35 +65,33 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
         </div>
       )}
 
-      {due > 0 && (
-        <button className="card review-cta" onClick={goReview}>
-          🧠 <b>{due}</b> {due === 1 ? "scheda da ripassare" : "schede da ripassare"} — funziona anche offline
-        </button>
-      )}
-
       {ready && (
         <section className="card mission">
           <div className="eyebrow">Missione del giorno</div>
           {busy && <p className="loading">Sto preparando la missione…</p>}
           {!busy && mission && area && (
             <>
-              <div className="area-tag">
-                {area.emoji} {area.label}
-              </div>
               <h2>{mission.topic}</h2>
-              <p className="hook">💡 {mission.hook}</p>
+              <div className="area-tag">
+                {area.emoji} {area.label} · {data.profile?.minutes} min · livello {skillLabel(data.stats.skill[mission.area])}
+              </div>
+              <p className="hook">{mission.hook}</p>
               <p className="muted small">🎯 {mission.why}</p>
-              <div className="row wrap">
-                <button className="btn primary" onClick={() => onStart(mission)}>Accetta</button>
+              <div className="mission-actions">
+                <button className="btn primary" onClick={() => onStart(mission)}>
+                  Inizia missione
+                </button>
                 <button
-                  className="btn"
+                  className="btn icon"
+                  title="Sostituisci missione"
+                  aria-label="Sostituisci missione"
                   onClick={() => {
                     const ex = [...rejected, mission.topic];
                     setRejected(ex);
                     void newMission({ exclude: ex });
                   }}
                 >
-                  Sostituisci
+                  ↻
                 </button>
               </div>
             </>
@@ -111,12 +107,28 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
         </section>
       )}
 
+      <div className="stats-row">
+        <button className={due > 0 ? "stat hot" : "stat"} onClick={goReview}>
+          <b>{due}</b>
+          <span>da ripassare</span>
+        </button>
+        <div className="stat">
+          <b>{Object.values(data.stats.xp).reduce((a, b) => a + b, 0)}</b>
+          <span>XP totali</span>
+        </div>
+        <div className="stat">
+          <b>{data.stats.badges.length}</b>
+          <span>badge</span>
+        </div>
+      </div>
+
       <section className="card">
         <h3>Sfide della settimana</h3>
         {weeklyChallenges(data).map((c) => (
           <div key={c.label} className="challenge">
-            <span>
-              {c.value >= c.target ? "✅" : "⬜"} {c.label}
+            <span className={c.value >= c.target ? "ok" : ""}>
+              {c.value >= c.target ? "✓ " : ""}
+              {c.label}
             </span>
             <span className="muted small">
               {Math.min(c.value, c.target)}/{c.target}
@@ -138,8 +150,9 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
               .map((l) => (
                 <li key={l.id}>
                   <button className="link" onClick={() => onOpenLesson(l.id)}>
-                    {AREAS.find((a) => a.id === l.area)?.emoji} {l.topic}
-                    <span className="muted small"> {l.score === null ? "· da completare" : `· ${Math.round(l.score * 100)}%`}</span>
+                    <span>{AREAS.find((a) => a.id === l.area)?.emoji}</span>
+                    <span style={{ flex: 1 }}>{l.topic}</span>
+                    <span className="muted small">{l.score === null ? "da completare" : `${Math.round(l.score * 100)}%`}</span>
                   </button>
                 </li>
               ))}
