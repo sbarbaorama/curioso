@@ -1,0 +1,151 @@
+import { useEffect, useRef, useState } from "react";
+import { proposeMission } from "../ai/prompts";
+import { isConfigured } from "../ai/engines";
+import { streak, todayKey, weeklyChallenges } from "../gamification";
+import { dueCards } from "../srs";
+import { getData, getSettings, setData, useData, useSettings } from "../store";
+import type { Mission } from "../types";
+import { AREAS } from "../types";
+
+export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart: (m: Mission) => void; onOpenLesson: (id: string) => void; goSettings: () => void; goReview: () => void }) {
+  const data = useData();
+  const settings = useSettings();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [wish, setWish] = useState("");
+  const [rejected, setRejected] = useState<string[]>([]);
+  const started = useRef(false);
+
+  const ready = isConfigured(settings, settings.primary);
+  const mission = data.mission?.date === todayKey() ? data.mission : undefined;
+  const due = dueCards(data.cards).length;
+  const doneToday = data.lessons.some((l) => l.date === todayKey() && l.score !== null);
+
+  async function newMission(opts: { exclude?: string[]; request?: string } = {}) {
+    setBusy(true);
+    setError("");
+    try {
+      const m = await proposeMission(getSettings(), getData(), opts);
+      setData((d) => ({ ...d, mission: { ...m, date: todayKey() } }));
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!mission && ready && !started.current && navigator.onLine) {
+      started.current = true;
+      void newMission();
+    }
+  }, [mission, ready]);
+
+  const area = mission ? AREAS.find((a) => a.id === mission.area) : undefined;
+  const hour = new Date().getHours();
+  const hello = hour < 12 ? "Buongiorno" : hour < 18 ? "Buon pomeriggio" : "Buonasera";
+
+  return (
+    <div className="screen">
+      <header className="home-head">
+        <div>
+          <h1>
+            {hello}
+            {data.profile?.name ? `, ${data.profile.name}` : ""}!
+          </h1>
+          <p className="muted">{doneToday ? "Missione di oggi completata ✅" : "Pronto per la missione di oggi?"}</p>
+        </div>
+        <div className="streak" title="Streak flessibile: un giorno saltato non la interrompe">
+          🔥 {streak(data.stats.activeDays)}
+        </div>
+      </header>
+
+      {!ready && (
+        <div className="card warn">
+          <p>Per generare le lezioni serve una chiave AI gratuita.</p>
+          <button className="btn primary" onClick={goSettings}>Vai alle Impostazioni</button>
+        </div>
+      )}
+
+      {due > 0 && (
+        <button className="card review-cta" onClick={goReview}>
+          🧠 <b>{due}</b> {due === 1 ? "scheda da ripassare" : "schede da ripassare"} — funziona anche offline
+        </button>
+      )}
+
+      {ready && (
+        <section className="card mission">
+          <div className="eyebrow">Missione del giorno</div>
+          {busy && <p className="loading">Sto preparando la missione…</p>}
+          {!busy && mission && area && (
+            <>
+              <div className="area-tag">
+                {area.emoji} {area.label}
+              </div>
+              <h2>{mission.topic}</h2>
+              <p className="hook">💡 {mission.hook}</p>
+              <p className="muted small">🎯 {mission.why}</p>
+              <div className="row wrap">
+                <button className="btn primary" onClick={() => onStart(mission)}>Accetta</button>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    const ex = [...rejected, mission.topic];
+                    setRejected(ex);
+                    void newMission({ exclude: ex });
+                  }}
+                >
+                  Sostituisci
+                </button>
+              </div>
+            </>
+          )}
+          {!busy && !mission && <button className="btn primary" onClick={() => newMission()}>Genera missione</button>}
+          {error && <p className="error">{error}</p>}
+          <div className="wish">
+            <input value={wish} onChange={(e) => setWish(e.target.value)} placeholder="Oggi voglio approfondire…" onKeyDown={(e) => e.key === "Enter" && wish.trim() && newMission({ request: wish.trim() })} />
+            <button className="btn small" disabled={!wish.trim() || busy} onClick={() => newMission({ request: wish.trim() })}>
+              Vai
+            </button>
+          </div>
+        </section>
+      )}
+
+      <section className="card">
+        <h3>Sfide della settimana</h3>
+        {weeklyChallenges(data).map((c) => (
+          <div key={c.label} className="challenge">
+            <span>
+              {c.value >= c.target ? "✅" : "⬜"} {c.label}
+            </span>
+            <span className="muted small">
+              {Math.min(c.value, c.target)}/{c.target}
+            </span>
+            <div className="bar">
+              <div style={{ width: `${Math.min(100, (c.value / c.target) * 100)}%` }} />
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {data.lessons.length > 0 && (
+        <section className="card">
+          <h3>Ultime lezioni</h3>
+          <ul className="list">
+            {data.lessons
+              .slice(-5)
+              .reverse()
+              .map((l) => (
+                <li key={l.id}>
+                  <button className="link" onClick={() => onOpenLesson(l.id)}>
+                    {AREAS.find((a) => a.id === l.area)?.emoji} {l.topic}
+                    <span className="muted small"> {l.score === null ? "· da completare" : `· ${Math.round(l.score * 100)}%`}</span>
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  );
+}
