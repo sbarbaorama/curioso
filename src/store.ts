@@ -14,6 +14,7 @@ export function emptyData(): AppData {
     updatedAt: new Date(0).toISOString(),
     lessons: [],
     cards: [],
+    conversations: [],
     stats: { xp: zero(), skill: Object.fromEntries(AREAS.map((a) => [a.id, 40])) as AppData["stats"]["skill"], activeDays: [], badges: [], reviewsByDay: {} },
   };
 }

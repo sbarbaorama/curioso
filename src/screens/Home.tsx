@@ -19,7 +19,10 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
   const ready = isConfigured(settings, settings.primary);
   const mission = data.mission?.date === todayKey() ? data.mission : undefined;
   const due = dueCards(data.cards).length;
-  const doneToday = data.lessons.some((l) => l.date === todayKey() && l.score !== null);
+  const todayDone = data.lessons.filter((l) => l.date === todayKey() && l.score !== null);
+  const missionLesson = mission?.lessonId ? data.lessons.find((l) => l.id === mission.lessonId) : undefined;
+  const missionDone = missionLesson?.score != null;
+  const todayTopics = data.lessons.filter((l) => l.date === todayKey()).map((l) => l.topic);
 
   async function newMission(opts: { exclude?: string[]; request?: string } = {}) {
     setBusy(true);
@@ -51,7 +54,9 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
         <div>
           <div className="hello">{hello}</div>
           <h1>{data.profile?.name || "Bentornato"}</h1>
-          <p className="status">{doneToday ? "Missione di oggi completata ✓" : "Pronto per la missione di oggi?"}</p>
+          <p className="status">
+            {todayDone.length === 0 ? "Pronto per la missione di oggi?" : `Oggi: ${todayDone.length} ${todayDone.length === 1 ? "missione completata" : "missioni completate"} ✓`}
+          </p>
         </div>
         <div className="streak" title="Streak flessibile: un giorno saltato non la interrompe">
           🔥 {streak(data.stats.activeDays)}
@@ -67,26 +72,39 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
 
       {ready && (
         <section className="card mission">
-          <div className="eyebrow">Missione del giorno</div>
+          <div className="eyebrow">{todayDone.length === 0 ? "Missione del giorno" : `Missione ${todayDone.length + (missionDone ? 0 : 1)} di oggi`}</div>
           {busy && <p className="loading">Sto preparando la missione…</p>}
           {!busy && mission && area && (
             <>
-              <h2>{mission.topic}</h2>
+              <h2>
+                {missionDone && <span className="ok">✓ </span>}
+                {mission.topic}
+              </h2>
               <div className="area-tag">
                 {area.emoji} {area.label} · {data.profile?.minutes} min · livello {skillLabel(data.stats.skill[mission.area])}
               </div>
               <p className="hook">{mission.hook}</p>
               <p className="muted small">🎯 {mission.why}</p>
               <div className="mission-actions">
-                <button className="btn primary" onClick={() => onStart(mission)}>
-                  Inizia missione
-                </button>
+                {missionDone ? (
+                  <button className="btn primary" onClick={() => newMission({ exclude: [...rejected, ...todayTopics] })}>
+                    Nuova missione
+                  </button>
+                ) : missionLesson ? (
+                  <button className="btn primary" onClick={() => onOpenLesson(missionLesson.id)}>
+                    Continua missione
+                  </button>
+                ) : (
+                  <button className="btn primary" onClick={() => onStart(mission)}>
+                    Inizia missione
+                  </button>
+                )}
                 <button
                   className="btn icon"
                   title="Sostituisci missione"
                   aria-label="Sostituisci missione"
                   onClick={() => {
-                    const ex = [...rejected, mission.topic];
+                    const ex = [...rejected, mission.topic, ...todayTopics];
                     setRejected(ex);
                     void newMission({ exclude: ex });
                   }}
@@ -99,7 +117,7 @@ export function Home({ onStart, onOpenLesson, goSettings, goReview }: { onStart:
           {!busy && !mission && <button className="btn primary" onClick={() => newMission()}>Genera missione</button>}
           {error && <p className="error">{error}</p>}
           <div className="wish">
-            <input value={wish} onChange={(e) => setWish(e.target.value)} placeholder="Oggi voglio approfondire…" onKeyDown={(e) => e.key === "Enter" && wish.trim() && newMission({ request: wish.trim() })} />
+            <input value={wish} onChange={(e) => setWish(e.target.value)} placeholder={todayDone.length ? "Ancora curioso? Approfondisci…" : "Oggi voglio approfondire…"} onKeyDown={(e) => e.key === "Enter" && wish.trim() && newMission({ request: wish.trim() })} />
             <button className="btn small" disabled={!wish.trim() || busy} onClick={() => newMission({ request: wish.trim() })}>
               Vai
             </button>

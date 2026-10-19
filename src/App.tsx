@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { HomeIcon, ProgressIcon, ReviewIcon, SettingsIcon } from "./components/Icons";
+import { HomeIcon, LanguagesIcon, ProgressIcon, ReviewIcon, SettingsIcon } from "./components/Icons";
+import { Chat } from "./screens/Chat";
 import { Home } from "./screens/Home";
+import { Languages } from "./screens/Languages";
 import { Lesson } from "./screens/Lesson";
 import { Onboarding } from "./screens/Onboarding";
 import { Progress } from "./screens/Progress";
@@ -10,8 +12,8 @@ import { dueCards } from "./srs";
 import { runSync, useData } from "./store";
 import type { Mission } from "./types";
 
-type Tab = "home" | "review" | "progress" | "settings";
-type Overlay = { kind: "lesson"; source: { mission: Mission } | { lessonId: string }; key: number } | { kind: "profile" } | null;
+type Tab = "home" | "languages" | "review" | "progress" | "settings";
+type Overlay = { kind: "lesson"; source: { mission: Mission } | { lessonId: string }; key: number } | { kind: "profile" } | { kind: "chat"; id: string } | null;
 
 export function App() {
   const data = useData();
@@ -34,6 +36,9 @@ export function App() {
   if (overlay?.kind === "lesson") {
     return <Lesson key={overlay.key} source={overlay.source} onClose={() => setOverlay(null)} onNext={(m) => openLesson({ mission: m })} />;
   }
+  if (overlay?.kind === "chat") {
+    return <Chat key={overlay.id} id={overlay.id} onClose={() => setOverlay(null)} />;
+  }
   if (overlay?.kind === "profile") {
     return <Onboarding onDone={() => setOverlay(null)} />;
   }
@@ -44,14 +49,19 @@ export function App() {
     <div className="app">
       <main>
         {tab === "home" && <Home onStart={(m) => openLesson({ mission: m })} onOpenLesson={(id) => openLesson({ lessonId: id })} goSettings={() => setTab("settings")} goReview={() => setTab("review")} />}
+        {tab === "languages" && <Languages onOpenChat={(id) => setOverlay({ kind: "chat", id })} goReview={() => setTab("review")} />}
         {tab === "review" && <Review />}
         {tab === "progress" && <Progress onOpenLesson={(id) => openLesson({ lessonId: id })} />}
         {tab === "settings" && <SettingsScreen onEditProfile={() => setOverlay({ kind: "profile" })} />}
       </main>
-      <nav className="tabbar">
+      <nav className="tabbar five">
         <button className={tab === "home" ? "on" : ""} onClick={() => setTab("home")}>
           <HomeIcon />
           Oggi
+        </button>
+        <button className={tab === "languages" ? "on" : ""} onClick={() => setTab("languages")}>
+          <LanguagesIcon />
+          Lingue
         </button>
         <button className={tab === "review" ? "on" : ""} onClick={() => setTab("review")}>
           <ReviewIcon />
@@ -63,7 +73,7 @@ export function App() {
         </button>
         <button className={tab === "settings" ? "on" : ""} onClick={() => setTab("settings")}>
           <SettingsIcon />
-          Impostazioni
+          Opzioni
         </button>
       </nav>
     </div>

@@ -25,3 +25,10 @@ export const SettingsIcon = () => (
     <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" />
   </svg>
 );
+
+export const LanguagesIcon = () => (
+  <svg {...base}>
+    <path d="M4 5h9v7H8l-3 3v-3H4z" />
+    <path d="M13 9h7v7h-1v3l-3-3h-3v-3" />
+  </svg>
+);

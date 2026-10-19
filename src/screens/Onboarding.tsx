@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Chips } from "../components/Chips";
 import { setData, useData } from "../store";
-import type { Area, Minutes, Profile, SchoolLevel, Style } from "../types";
-import { AREAS, LEVELS, MINUTES, STYLES } from "../types";
+import type { Area, Cefr, LanguageGoal, Minutes, Profile, SchoolLevel, Style } from "../types";
+import { AREAS, CEFR_LEVELS, LANGUAGES, LEVELS, MINUTES, STYLES } from "../types";
 
 const INTERESTS = ["spazio", "biologia", "fisica", "chimica", "calcio", "videogiochi", "musica", "programmazione", "intelligenza artificiale", "viaggi", "storia", "arte", "cucina", "economia", "cinema", "fotografia"];
 const GOALS = ["Capire concetti nuovi", "Preparare una verifica", "Imparare a programmare", "Migliorare l'inglese", "Cultura generale", "Crescere nel lavoro"];
@@ -17,6 +17,11 @@ export function Onboarding({ onDone }: { onDone?: () => void }) {
   const [styles, setStyles] = useState<Style[]>(existing?.styles ?? ["esempi", "analogie"]);
   const [minutes, setMinutes] = useState<Minutes>(existing?.minutes ?? 10);
   const [areas, setAreas] = useState<Area[]>(existing?.areas ?? AREAS.map((a) => a.id));
+  const [languages, setLanguages] = useState<LanguageGoal[]>(existing?.languages ?? []);
+
+  function toggleLanguages(ids: string[]) {
+    setLanguages(ids.map((id) => languages.find((l) => l.lang === id) ?? { lang: id, level: "A2" as Cefr }));
+  }
 
   const allInterests = [...new Set([...INTERESTS, ...interests])];
 
@@ -27,7 +32,7 @@ export function Onboarding({ onDone }: { onDone?: () => void }) {
   }
 
   function save() {
-    const profile: Profile = { name: name.trim(), level, interests, goal, styles, minutes, areas: areas.length ? areas : AREAS.map((a) => a.id) };
+    const profile: Profile = { name: name.trim(), level, interests, goal, styles, minutes, areas: areas.length ? areas : AREAS.map((a) => a.id), languages };
     setData((d) => ({ ...d, profile, mission: existing ? d.mission : undefined }), { sync: true });
     onDone?.();
   }
@@ -64,6 +69,19 @@ export function Onboarding({ onDone }: { onDone?: () => void }) {
 
       <h3>Aree per la Missione del giorno</h3>
       <Chips options={AREAS.map((a) => ({ id: a.id, label: `${a.emoji} ${a.label}` }))} value={areas} onChange={setAreas} multi />
+
+      <h3>Lingue che vuoi praticare</h3>
+      <Chips options={LANGUAGES.map((l) => ({ id: l.id, label: `${l.flag} ${l.id}` }))} value={languages.map((l) => l.lang)} onChange={toggleLanguages} multi />
+      {languages.map((g) => (
+        <div key={g.lang} className="lang-level">
+          <span className="small muted">{g.lang}</span>
+          <Chips
+            options={CEFR_LEVELS.map((c) => ({ id: c.id, label: c.id }))}
+            value={[g.level]}
+            onChange={(v) => setLanguages(languages.map((l) => (l.lang === g.lang ? { ...l, level: v[0] } : l)))}
+          />
+        </div>
+      ))}
 
       <button className="btn primary block" onClick={save}>
         {existing ? "Salva profilo" : "Iniziamo!"}

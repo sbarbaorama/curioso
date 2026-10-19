@@ -8,7 +8,7 @@ Principi: spieghi il ragionamento passo per passo, adatti vocabolario, tono, lun
 usi analogie legate agli interessi della persona, proponi verifiche attive e indizi progressivi invece di dare subito la risposta.
 Sei accurato: se un fatto è incerto lo dici. Non inventi fonti.`;
 
-function describeProfile(p: Profile): string {
+export function describeProfile(p: Profile): string {
   const level = LEVELS.find((l) => l.id === p.level)?.label ?? p.level;
   const styles = p.styles.map((s) => STYLES.find((x) => x.id === s)?.label ?? s).join(", ");
   return [

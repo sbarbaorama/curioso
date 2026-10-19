@@ -74,8 +74,14 @@ export function merge(local: AppData, remote: AppData): AppData {
     for (const [k, v] of Object.entries(b)) out[k] = Math.max(out[k] ?? 0, v);
     return out;
   };
+  const convs = new Map((local.conversations ?? []).map((c) => [c.id, c]));
+  for (const c of remote.conversations ?? []) {
+    const mine = convs.get(c.id);
+    if (!mine || c.messages.length > mine.messages.length || (c.summary && !mine.summary)) convs.set(c.id, c);
+  }
   return {
     ...newer,
+    conversations: [...convs.values()].sort((a, b) => a.date.localeCompare(b.date)).slice(-40),
     lessons: [...lessons.values()].sort((a, b) => a.date.localeCompare(b.date)),
     cards: [...cards.values()],
     stats: {

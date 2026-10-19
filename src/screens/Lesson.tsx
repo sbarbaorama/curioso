@@ -27,7 +27,15 @@ export function Lesson({ source, onClose, onNext }: { source: Source; onClose: (
     try {
       const lesson = await createLesson(getSettings(), getData(), mission);
       const rec: LessonRecord = { id: uid(), date: todayKey(), area: mission.area, topic: lesson.topic, score: null, lesson };
-      setData((d) => ({ ...d, lessons: [...d.lessons, rec].slice(-200) }), { sync: true });
+      setData(
+        (d) => ({
+          ...d,
+          lessons: [...d.lessons, rec].slice(-200),
+          // collega la missione del giorno alla sua lezione, così la Home sa se è completata
+          mission: d.mission && d.mission.date === mission.date && d.mission.topic === mission.topic ? { ...d.mission, lessonId: rec.id } : d.mission,
+        }),
+        { sync: true },
+      );
       setRecordId(rec.id);
     } catch (e) {
       setError((e as Error).message);

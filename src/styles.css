@@ -223,3 +223,53 @@ details summary { cursor: pointer; margin-top: 8px; color: var(--muted); }
 .tabbar button.on { color: #fff; }
 .tabbar button.on svg { filter: drop-shadow(0 0 6px var(--violet)); }
 .count { position: absolute; top: 5px; left: calc(50% + 8px); background: var(--grad); color: #fff; font-style: normal; font-size: 0.65rem; font-weight: 600; border-radius: 99px; padding: 0 6px; }
+
+/* Chat lingue */
+.chat { display: flex; flex-direction: column; min-height: 100vh; max-width: 640px; margin: 0 auto; }
+.chat-top {
+  position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px;
+  padding: max(10px, env(safe-area-inset-top)) 12px 10px; background: rgba(11, 11, 20, 0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.chat-title { flex: 1; display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.chat-title b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.chat-body { flex: 1; padding: 12px 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+.translate-toggle { align-self: center; color: var(--muted); margin: 0 0 4px; }
+.bubble { max-width: 86%; border-radius: 20px; padding: 0.7rem 0.9rem; line-height: 1.45; }
+.bubble p { margin: 0; }
+.bubble.ai { align-self: flex-start; background: var(--glass-strong); border: 1px solid var(--border); border-bottom-left-radius: 6px; backdrop-filter: blur(14px); }
+.bubble.typing { color: var(--muted); animation: pulse 1.4s ease-in-out infinite; }
+.bubble-wrap { align-self: flex-end; max-width: 86%; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.bubble.user { max-width: 100%; background: var(--grad); color: #fff; border-bottom-right-radius: 6px; box-shadow: 0 6px 18px rgba(124, 92, 255, 0.25); }
+.translation { color: var(--soft); font-size: 0.9rem; margin-top: 6px !important; padding-top: 6px; border-top: 1px dashed var(--border); }
+.bubble-actions { display: flex; gap: 6px; margin-top: 8px; }
+.bubble-actions button, .mini {
+  background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border); color: var(--soft);
+  border-radius: 8px; padding: 2px 8px; font: 500 0.78rem var(--font); cursor: pointer;
+}
+.bubble-actions button:disabled { opacity: 0.4; }
+.vocab { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; font-size: 0.84rem; color: var(--soft); }
+.vocab b { color: #7fe7ff; font-weight: 600; }
+.correction { background: rgba(255, 200, 87, 0.07); border: 1px solid rgba(255, 200, 87, 0.25); border-radius: 14px; padding: 0.55rem 0.75rem; max-width: 100%; position: relative; }
+.correction p { margin: 2px 0 0; }
+.correction p:first-of-type { color: #ffe2a3; font-weight: 600; padding-right: 30px; }
+.correction .mini { position: absolute; right: 8px; top: 8px; }
+.summary ul { margin: 0; padding-left: 1.2rem; }
+.chat-input {
+  position: sticky; bottom: 0; padding: 8px 12px max(10px, env(safe-area-inset-bottom));
+  background: rgba(11, 11, 20, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.suggestions { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.suggestions::-webkit-scrollbar { display: none; }
+.suggestions button {
+  flex-shrink: 0; background: rgba(124, 92, 255, 0.12); border: 1px solid rgba(124, 92, 255, 0.4); color: #d9d2ff;
+  border-radius: 12px; padding: 0.35rem 0.7rem; font: 500 0.84rem var(--font); cursor: pointer;
+}
+.chat-row { display: flex; gap: 8px; align-items: flex-end; }
+.chat-row textarea { margin: 0; flex: 1; min-height: 46px; max-height: 120px; }
+.chat-row .btn.icon { height: 46px; padding: 0 0.9rem; }
+.listening { border-color: var(--ko); box-shadow: 0 0 0 3px rgba(255, 99, 132, 0.25); animation: pulse 1s infinite; }
+.tabbar.five { grid-template-columns: repeat(5, 1fr); }
+.lang-level { display: flex; align-items: center; gap: 10px; }
+.lang-level > span { width: 78px; flex-shrink: 0; }
+.lang-level .chips { margin: 4px 0; }

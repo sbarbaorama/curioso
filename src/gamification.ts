@@ -57,13 +57,15 @@ export function lessonXp(score: number) {
 }
 
 const countArea = (data: AppData, area: Area) => data.lessons.filter((l) => l.area === area && l.score !== null).length;
+const finishedChats = (data: AppData) => (data.conversations ?? []).filter((c) => c.summary).length;
 const totalReviews = (data: AppData) => Object.values(data.stats.reviewsByDay).reduce((a, b) => a + b, 0);
 
 export const BADGES: { id: string; name: string; emoji: string; desc: string; check: (d: AppData) => boolean }[] = [
   { id: "primo-passo", name: "Primo passo", emoji: "👣", desc: "Completa la prima missione", check: (d) => d.lessons.some((l) => l.score !== null) },
   { id: "esploratore", name: "Esploratore scientifico", emoji: "🔭", desc: "5 missioni di scienza", check: (d) => countArea(d, "scienza") >= 5 },
   { id: "debug-master", name: "Debug master", emoji: "🐞", desc: "5 missioni di programmazione", check: (d) => countArea(d, "programmazione") >= 5 },
-  { id: "polyglot", name: "Polyglot principiante", emoji: "🗣️", desc: "5 missioni di lingue", check: (d) => countArea(d, "lingue") >= 5 },
+  { id: "polyglot", name: "Polyglot principiante", emoji: "🗣️", desc: "5 missioni o conversazioni di lingue", check: (d) => countArea(d, "lingue") + finishedChats(d) >= 5 },
+  { id: "chiacchierone", name: "Chiacchierone", emoji: "💬", desc: "10 conversazioni in lingua concluse", check: (d) => finishedChats(d) >= 10 },
   { id: "inventore", name: "Inventore", emoji: "⚙️", desc: "5 missioni di tecnologia", check: (d) => countArea(d, "tecnologia") >= 5 },
   { id: "enciclopedia", name: "Enciclopedia vivente", emoji: "📖", desc: "5 missioni di cultura generale", check: (d) => countArea(d, "cultura") >= 5 },
   { id: "universale", name: "Curioso universale", emoji: "🌈", desc: "Almeno una missione in ogni area", check: (d) => AREAS.every((a) => countArea(d, a.id) > 0) },
@@ -90,10 +92,12 @@ export function weeklyChallenges(data: AppData) {
     .reduce((a, [, n]) => a + n, 0);
   const areas = new Set(lessons.map((l) => l.area)).size;
   const days = data.stats.activeDays.filter((d) => d >= start).length;
+  const chats = (data.conversations ?? []).filter((c) => c.date >= start && c.summary).length;
   return [
     { label: "3 missioni completate", value: lessons.length, target: 3 },
     { label: "30 schede ripassate", value: reviews, target: 30 },
     { label: "2 aree diverse", value: areas, target: 2 },
+    { label: "2 conversazioni in lingua", value: chats, target: 2 },
     { label: "Attivo 4 giorni", value: days, target: 4 },
   ];
 }

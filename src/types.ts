@@ -43,6 +43,7 @@ export interface Profile {
   styles: Style[];
   minutes: Minutes;
   areas: Area[]; // aree preferite per la missione del giorno
+  languages?: LanguageGoal[]; // lingue straniere che si stanno studiando
 }
 
 export interface Mission {
@@ -51,6 +52,7 @@ export interface Mission {
   topic: string;
   hook: string; // curiosità / gancio
   why: string; // perché ti serve
+  lessonId?: string; // lezione generata da questa missione
 }
 
 export interface QuizItem {
@@ -112,6 +114,7 @@ export interface AppData {
   mission?: Mission;
   lessons: LessonRecord[];
   cards: StudyCard[];
+  conversations?: Conversation[];
   stats: Stats;
 }
 
@@ -147,4 +150,68 @@ export interface Settings {
   keys: Record<EngineId, string>;
   models: Record<EngineId, string>;
   github: { token: string; repo: string; path: string; auto: boolean };
+}
+
+// ---------- Lingue ----------
+
+export type Cefr = "A1" | "A2" | "B1" | "B2" | "C1";
+export const CEFR_LEVELS: { id: Cefr; label: string }[] = [
+  { id: "A1", label: "A1 · base" },
+  { id: "A2", label: "A2 · elementare" },
+  { id: "B1", label: "B1 · intermedio" },
+  { id: "B2", label: "B2 · intermedio alto" },
+  { id: "C1", label: "C1 · avanzato" },
+];
+
+export const LANGUAGES: { id: string; flag: string; speech: string }[] = [
+  { id: "Inglese", flag: "🇬🇧", speech: "en-GB" },
+  { id: "Spagnolo", flag: "🇪🇸", speech: "es-ES" },
+  { id: "Francese", flag: "🇫🇷", speech: "fr-FR" },
+  { id: "Tedesco", flag: "🇩🇪", speech: "de-DE" },
+  { id: "Portoghese", flag: "🇵🇹", speech: "pt-PT" },
+  { id: "Giapponese", flag: "🇯🇵", speech: "ja-JP" },
+  { id: "Cinese", flag: "🇨🇳", speech: "zh-CN" },
+];
+
+export interface LanguageGoal {
+  lang: string;
+  level: Cefr;
+}
+
+export interface VocabItem {
+  term: string;
+  meaning: string;
+  example?: string;
+}
+
+export interface ChatCorrection {
+  corrected: string; // versione corretta e naturale
+  explanation: string; // breve spiegazione in italiano
+}
+
+export interface ChatMsg {
+  role: "ai" | "user";
+  text: string;
+  translation?: string;
+  correction?: ChatCorrection | null;
+  vocab?: VocabItem[];
+  suggestions?: string[];
+}
+
+export interface ConversationSummary {
+  feedback: string;
+  strengths: string[];
+  improve: string[];
+  levelEstimate: string;
+}
+
+export interface Conversation {
+  id: string;
+  date: string;
+  lang: string;
+  level: Cefr;
+  scenario: string;
+  partner: string; // ruolo dell'interlocutore
+  messages: ChatMsg[];
+  summary?: ConversationSummary;
 }
