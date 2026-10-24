@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { callEngine, listModels } from "../ai/engines";
+import { promptInstall, useInstallState } from "../install";
 import { syncConfigured } from "../sync";
 import { getSettings, runSync, setSettings, useSettings, useSyncState } from "../store";
 import type { EngineId } from "../types";
@@ -8,6 +9,8 @@ import { ENGINES } from "../types";
 export function SettingsScreen({ onEditProfile }: { onEditProfile: () => void }) {
   const s = useSettings();
   const sync = useSyncState();
+  const install = useInstallState();
+  const [installMsg, setInstallMsg] = useState("");
 
   return (
     <div className="screen">
@@ -75,6 +78,32 @@ export function SettingsScreen({ onEditProfile }: { onEditProfile: () => void })
           {sync.status === "ok" && <span className="ok small">✓ Sincronizzato alle {sync.at}</span>}
           {sync.status === "error" && <span className="error small">{sync.message}</span>}
         </div>
+      </section>
+
+      <section className="card">
+        <h3>App sul telefono</h3>
+        {install === "standalone" ? (
+          <p className="ok small">✓ Stai usando l'app installata.</p>
+        ) : install === "installed" ? (
+          <p className="ok small">✓ App installata: la trovi tra le app del telefono.</p>
+        ) : (
+          <>
+            <button
+              className="btn primary"
+              onClick={async () => {
+                if (install === "ready") {
+                  const ok = await promptInstall();
+                  setInstallMsg(ok ? "" : "Installazione annullata: puoi riprovare più tardi.");
+                } else {
+                  setInstallMsg("Il browser non ha ancora proposto l'installazione: usa il menu ⋮ di Chrome → “Installa app” (o “Aggiungi a schermata Home”).");
+                }
+              }}
+            >
+              ⬇️ Installa l'app
+            </button>
+            <p className="muted small">{installMsg || "Curioso si aprirà a schermo intero, come un'app normale, e funzionerà anche offline per i ripassi."}</p>
+          </>
+        )}
       </section>
 
       <section className="card">

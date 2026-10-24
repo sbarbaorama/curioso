@@ -3,6 +3,7 @@
   "short_name": "Curioso",
   "description": "Tutor personale adattivo: missioni quotidiane, pratica attiva e ripasso distribuito.",
   "lang": "it",
+  "id": "/curioso/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
